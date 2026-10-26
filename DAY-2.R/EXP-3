@@ -1,0 +1,32 @@
+# EXP-3: Statistical Analysis and Boxplot
+
+# Mathematics examination results
+class_A <- c(76, 35, 47, 64, 95, 66, 89, 36, 84)
+class_B <- c(51, 56, 84, 60, 59, 70, 63, 66, 50)
+
+# Calculate mean
+cat("Mean of Class A:", mean(class_A), "\n")
+cat("Mean of Class B:", mean(class_B), "\n")
+
+# Calculate median
+cat("Median of Class A:", median(class_A), "\n")
+cat("Median of Class B:", median(class_B), "\n")
+
+# Calculate range
+cat("Range of Class A:", range(class_A), "\n")
+cat("Range of Class B:", range(class_B), "\n")
+
+# Draw boxplot
+boxplot(class_A, class_B,
+        names = c("Class A", "Class B"),
+        main = "Comparison of Mathematics Exam Results",
+        xlab = "Classes",
+        ylab = "Marks",
+        col = c("lightblue", "lightgreen"))
+
+# Display summary
+cat("\nSummary of Class A:\n")
+print(summary(class_A))
+
+cat("\nSummary of Class B:\n")
+print(summary(class_B))
