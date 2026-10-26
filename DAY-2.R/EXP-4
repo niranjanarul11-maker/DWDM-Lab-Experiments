@@ -1,0 +1,30 @@
+# EXP-4: Data Normalization
+
+# Min-Max normalization of salary
+min_salary <- 50000
+max_salary <- 100000
+salary <- 80000
+
+normalized_salary <- (salary - min_salary) /
+                     (max_salary - min_salary)
+
+cat("Normalized Salary:", normalized_salary, "\n")
+
+# Given data
+data <- c(200, 300, 400, 600, 1000)
+
+# Min-Max normalization
+min_value <- min(data)
+max_value <- max(data)
+
+min_max <- (data - min_value) /
+           (max_value - min_value)
+
+cat("\nMin-Max Normalization:\n")
+print(min_max)
+
+# Z-score normalization
+z_score <- (data - mean(data)) / sd(data)
+
+cat("\nZ-Score Normalization:\n")
+print(z_score)
