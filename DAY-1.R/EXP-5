@@ -1,0 +1,38 @@
+# EXP-5: Statistical Analysis of Age and Body Fat
+
+# Given data
+age <- c(23, 23, 27, 27, 39, 41, 47, 49, 50,
+         52, 54, 54, 56, 57, 58, 58, 60, 61)
+
+fat <- c(9.5, 26.5, 7.8, 17.8, 31.4, 25.9, 27.4, 27.2, 31.2,
+         34.6, 42.5, 28.8, 33.4, 30.2, 34.1, 32.9, 41.2, 35.7)
+
+# Mean
+cat("Mean Age:", mean(age), "\n")
+cat("Mean Body Fat:", mean(fat), "\n")
+
+# Median
+cat("Median Age:", median(age), "\n")
+cat("Median Body Fat:", median(fat), "\n")
+
+# Standard deviation
+cat("Standard Deviation of Age:", sd(age), "\n")
+cat("Standard Deviation of Body Fat:", sd(fat), "\n")
+
+# Boxplots
+boxplot(age, main = "Boxplot of Age", ylab = "Age")
+boxplot(fat, main = "Boxplot of Body Fat", ylab = "Body Fat (%)")
+
+# Scatter plot
+plot(age, fat,
+     main = "Age vs Body Fat",
+     xlab = "Age",
+     ylab = "Body Fat (%)",
+     pch = 19)
+
+# Q-Q plots
+qqnorm(age, main = "Q-Q Plot of Age")
+qqline(age)
+
+qqnorm(fat, main = "Q-Q Plot of Body Fat")
+qqline(fat)
