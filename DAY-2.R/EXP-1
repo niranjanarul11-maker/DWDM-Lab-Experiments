@@ -1,0 +1,25 @@
+# EXP-1: Covariance and Correlation
+
+# Given data
+A <- c(18, 2, 20)
+B <- c(22, 28, 10)
+C <- c(20, 40, 40)
+
+# Combine preferences into a data frame
+preferences <- data.frame(A, B, C)
+
+# Sample covariance between B and C
+cat("Covariance between B and C:\n")
+print(cov(B, C))
+
+# Sample covariance matrix
+cat("Covariance Matrix:\n")
+print(cov(preferences))
+
+# Sample correlation between B and C
+cat("Correlation between B and C:\n")
+print(cor(B, C))
+
+# Sample correlation matrix
+cat("Correlation Matrix:\n")
+print(cor(preferences))
