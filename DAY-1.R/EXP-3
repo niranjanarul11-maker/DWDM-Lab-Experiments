@@ -1,0 +1,15 @@
+# Normalization (Reduction and Transformation)
+
+# Given data
+
+x <- c(200, 300, 400, 600, 1000)
+
+# (a) Min-Max Normalization
+
+min_max_norm <- (x - min(x)) / (max(x) - min(x))
+print(min_max_norm)
+
+# (b) Z-Score Normalization
+
+z_score_norm <- (x - mean(x)) / sd(x)
+print(z_score_norm)
