@@ -1,0 +1,17 @@
+# EXP-5: Histogram Using AirPassengers Dataset
+
+# Load the built-in dataset
+data("AirPassengers")
+
+# Display the dataset
+print(AirPassengers)
+
+# Draw histogram
+hist(AirPassengers,
+     main = "Histogram of AirPassengers",
+     xlab = "Number of Passengers",
+     ylab = "Frequency",
+     xlim = c(100, 700),
+     breaks = seq(100, 700, by = 150),
+     col = "lightblue",
+     right = FALSE)
