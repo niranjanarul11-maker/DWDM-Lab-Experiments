@@ -1,0 +1,29 @@
+# EXP-6: Multiple Line Chart Using R
+
+# Load the built-in dataset
+data(mtcars)
+
+# Extract variables
+mpg <- mtcars$mpg
+qsec <- mtcars$qsec
+
+# Draw multiple lines in a single plot
+plot(mpg, type = "o",
+     col = "blue",
+     pch = 16,
+     ylim = range(c(mpg, qsec)),
+     main = "MPG and QSEC Line Chart",
+     xlab = "Car Index",
+     ylab = "Values")
+
+# Add the second line
+lines(qsec, type = "o",
+      col = "red",
+      pch = 17)
+
+# Add legend
+legend("topright",
+       legend = c("MPG", "QSEC"),
+       col = c("blue", "red"),
+       lty = 1,
+       pch = c(16, 17))
