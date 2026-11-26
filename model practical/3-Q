@@ -1,24 +1,168 @@
 
-@relation patient_symptoms
+# EXPERIMENT 3
+# APRIORI AND FP-GROWTH ALGORITHMS
 
-@attribute Fever {yes,no}
-@attribute Cough {yes,no}
-@attribute Sore_Throat {yes,no}
-@attribute Headache {yes,no}
-@attribute Body_Pain {yes,no}
-@attribute Fatigue {yes,no}
-@attribute Shortness_of_Breath {yes,no}
-@attribute Dizziness {yes,no}
-@attribute Chest_Pain {yes,no}
+# Install package (run only once)
+install.packages("arules")
 
-@data
-yes,yes,yes,yes,no,no,no,no,no
-yes,yes,no,no,yes,no,no,no,no
-no,yes,yes,no,no,yes,yes,no,no
-yes,yes,yes,no,yes,no,no,no,no
-yes,no,no,yes,no,yes,no,yes,no
-no,yes,no,no,no,yes,yes,no,yes
-yes,yes,yes,yes,no,yes,no,no,no
-no,yes,yes,yes,no,yes,no,yes,no
-yes,yes,no,no,yes,no,yes,no,no
-no,yes,no,no,no,yes,no,yes,yes
+# Load package
+library(arules)
+
+# --------------------------------
+# STEP 1: Create Patient Dataset
+# --------------------------------
+
+symptoms <- list(
+  c("Fever", "Cough", "Sore_Throat", "Headache"),
+  c("Fever", "Cough", "Body_Pain"),
+  c("Cough", "Sore_Throat", "Fatigue", "Shortness_of_Breath"),
+  c("Fever", "Cough", "Sore_Throat", "Body_Pain"),
+  c("Fever", "Fatigue", "Headache", "Dizziness"),
+  c("Cough", "Shortness_of_Breath", "Chest_Pain", "Fatigue"),
+  c("Fever", "Cough", "Sore_Throat", "Headache", "Fatigue"),
+  c("Cough", "Sore_Throat", "Headache", "Fatigue", "Dizziness"),
+  c("Fever", "Cough", "Body_Pain", "Shortness_of_Breath"),
+  c("Cough", "Fatigue", "Dizziness", "Chest_Pain")
+)
+
+# Convert into transactions
+trans <- as(symptoms, "transactions")
+
+# Display dataset
+inspect(trans)
+
+# --------------------------------
+# STEP 2: Create ARFF File
+# --------------------------------
+
+symptom_names <- c(
+  "Fever", "Cough", "Sore_Throat",
+  "Headache", "Body_Pain", "Fatigue",
+  "Shortness_of_Breath", "Dizziness",
+  "Chest_Pain"
+)
+
+# Create binary dataset
+data <- matrix(
+  "no",
+  nrow = 10,
+  ncol = length(symptom_names)
+)
+
+colnames(data) <- symptom_names
+
+for (i in 1:10) {
+  for (j in 1:length(symptom_names)) {
+    if (symptom_names[j] %in% symptoms[[i]]) {
+      data[i, j] <- "yes"
+    }
+  }
+}
+
+# Save ARFF file
+arff <- c(
+  "@relation patient_symptoms",
+  "",
+  paste0(
+    "@attribute ",
+    symptom_names,
+    " {yes,no}"
+  ),
+  "",
+  "@data",
+  apply(data, 1, paste, collapse = ",")
+)
+
+writeLines(arff, "patient_symptoms.arff")
+
+cat("ARFF file created successfully\n")
+
+# --------------------------------
+# STEP 3: APRIORI ALGORITHM
+# --------------------------------
+
+cat("\nAPRIORI ALGORITHM\n")
+
+apriori_rules <- apriori(
+  trans,
+  parameter = list(
+    support = 0.2,
+    confidence = 0.5,
+    minlen = 2
+  )
+)
+
+# Display Apriori rules
+inspect(apriori_rules)
+
+# Display frequent itemsets
+apriori_itemsets <- apriori(
+  trans,
+  parameter = list(
+    support = 0.2,
+    target = "frequent",
+    minlen = 1
+  )
+)
+
+inspect(apriori_itemsets)
+
+# --------------------------------
+# STEP 4: FP-GROWTH ALGORITHM
+# --------------------------------
+
+cat("\nFP-GROWTH ALGORITHM\n")
+
+fp_rules <- fim4r(
+  trans,
+  method = "fpgrowth",
+  target = "rules",
+  support = 0.2,
+  confidence = 0.5,
+  zmin = 2
+)
+
+# Display FP-Growth rules
+inspect(fp_rules)
+
+# Display frequent itemsets using FP-Growth
+fp_itemsets <- fim4r(
+  trans,
+  method = "fpgrowth",
+  target = "frequent",
+  support = 0.2,
+  zmin = 1
+)
+
+inspect(fp_itemsets)
+
+# --------------------------------
+# STEP 5: COMPARE UNIQUE RULES
+# --------------------------------
+
+apriori_labels <- labels(apriori_rules)
+fp_labels <- labels(fp_rules)
+
+# Rules generated only by Apriori
+apriori_unique <- setdiff(
+  apriori_labels,
+  fp_labels
+)
+
+# Rules generated only by FP-Growth
+fp_unique <- setdiff(
+  fp_labels,
+  apriori_labels
+)
+
+cat("\nRules unique to Apriori:\n")
+print(apriori_unique)
+
+cat("\nRules unique to FP-Growth:\n")
+print(fp_unique)
+
+cat("\nTotal Apriori rules:",
+    length(apriori_labels))
+
+cat("\nTotal FP-Growth rules:",
+    length(fp_labels))
