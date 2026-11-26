@@ -1,0 +1,136 @@
+
+# Decision Tree and Rule-Based Induction
+
+library(rpart)
+library(rpart.plot)
+library(RWeka)
+
+# Create dataset
+data <- expand.grid(
+  Income = c("Above5", "Below5"),
+  CreditScore = c("Above700", "Below700"),
+  EmploymentType = c("Permanent", "Temporary")
+)
+
+# Assign eligibility based on the given tree
+data$Eligibility <- with(data,
+  ifelse(Income == "Above5",
+         ifelse(CreditScore == "Above700",
+                "Eligible", "NotEligible"),
+         ifelse(EmploymentType == "Permanent",
+                "Eligible", "NotEligible"))
+)
+
+# Convert to factors
+data$Income <- factor(data$Income)
+data$CreditScore <- factor(data$CreditScore)
+data$EmploymentType <- factor(data$EmploymentType)
+
+data$Eligibility <- factor(
+  data$Eligibility,
+  levels = c("Eligible", "NotEligible")
+)
+
+# Repeat records for a larger dataset
+data <- data[rep(1:nrow(data), each = 5), ]
+
+# -----------------------------
+# Decision Tree
+# -----------------------------
+
+tree_model <- rpart(
+  Eligibility ~ Income + CreditScore + EmploymentType,
+  data = data,
+  method = "class",
+  control = rpart.control(
+    minsplit = 2,
+    minbucket = 1,
+    cp = 0
+  )
+)
+
+# Display decision tree
+rpart.plot(tree_model)
+
+# Prediction
+tree_pred <- predict(
+  tree_model,
+  data,
+  type = "class"
+)
+
+# Confusion matrix
+tree_cm <- table(
+  Actual = data$Eligibility,
+  Predicted = tree_pred
+)
+
+print(tree_cm)
+
+# Accuracy
+tree_accuracy <- sum(diag(tree_cm)) /
+                 sum(tree_cm) * 100
+
+cat("Decision Tree Accuracy:",
+    tree_accuracy, "%\n")
+
+# -----------------------------
+# Rule-Based Induction
+# -----------------------------
+
+rule_model <- JRip(
+  Eligibility ~ Income + CreditScore + EmploymentType,
+  data = data
+)
+
+# Display rules
+print(rule_model)
+
+# Prediction
+rule_pred <- predict(rule_model, data)
+
+# Confusion matrix
+rule_cm <- table(
+  Actual = data$Eligibility,
+  Predicted = rule_pred
+)
+
+print(rule_cm)
+
+# Accuracy
+rule_accuracy <- sum(diag(rule_cm)) /
+                 sum(rule_cm) * 100
+
+cat("Rule-Based Accuracy:",
+    rule_accuracy, "%\n")
+
+# -----------------------------
+# Compare Algorithms
+# -----------------------------
+
+cat("Decision Tree Accuracy:",
+    tree_accuracy, "%\n")
+
+cat("Rule-Based Accuracy:",
+    rule_accuracy, "%\n")
+
+# Plot confusion matrix
+barplot(
+  tree_cm,
+  beside = TRUE,
+  col = c("blue", "orange"),
+  main = "Decision Tree Confusion Matrix",
+  xlab = "Actual Class",
+  ylab = "Number of Records",
+  legend.text = TRUE
+)
+
+barplot(
+  rule_cm,
+  beside = TRUE,
+  col = c("green", "red"),
+  main = "Rule-Based Confusion Matrix",
+  xlab = "Actual Class",
+  ylab = "Number of Records",
+  legend.text = TRUE
+)
