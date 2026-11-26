@@ -1,0 +1,16 @@
+
+# Scatter Plot of Laptop Sales
+
+# Number of laptops sold
+x <- c(2, 4, 6, 8, 10, 12, 15, 18, 20, 25)
+
+# Sales revenue in thousands of rupees
+y <- c(80, 160, 240, 320, 400, 480, 600, 720, 800, 1000)
+
+# Create scatter plot
+plot(x, y,
+     main = "Laptop Sales vs Revenue",
+     xlab = "Number of Laptops Sold",
+     ylab = "Sales Revenue (in thousands of Rs.)",
+     pch = 19,
+     col = "blue")
