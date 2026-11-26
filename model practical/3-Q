@@ -1,0 +1,24 @@
+
+@relation patient_symptoms
+
+@attribute Fever {yes,no}
+@attribute Cough {yes,no}
+@attribute Sore_Throat {yes,no}
+@attribute Headache {yes,no}
+@attribute Body_Pain {yes,no}
+@attribute Fatigue {yes,no}
+@attribute Shortness_of_Breath {yes,no}
+@attribute Dizziness {yes,no}
+@attribute Chest_Pain {yes,no}
+
+@data
+yes,yes,yes,yes,no,no,no,no,no
+yes,yes,no,no,yes,no,no,no,no
+no,yes,yes,no,no,yes,yes,no,no
+yes,yes,yes,no,yes,no,no,no,no
+yes,no,no,yes,no,yes,no,yes,no
+no,yes,no,no,no,yes,yes,no,yes
+yes,yes,yes,yes,no,yes,no,no,no
+no,yes,yes,yes,no,yes,no,yes,no
+yes,yes,no,no,yes,no,yes,no,no
+no,yes,no,no,no,yes,no,yes,yes
