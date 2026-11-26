@@ -1,1 +1,35 @@
 
+# Employee WFH and WFO Preference
+
+# Create employee data
+employees <- c("Arjun", "Meera", "Kiran", "Sita",
+               "Rahul", "Neha", "Aman", "Pooja")
+
+preference <- c("yes", "no", "yes", "yes",
+                "no", "yes", "no", "yes")
+
+# Count WFH and WFO
+wfh <- sum(preference == "yes")
+wfo <- sum(preference == "no")
+
+# Display counts
+cat("Employees preferring WFH:", wfh, "\n")
+cat("Employees preferring WFO:", wfo, "\n")
+
+# Identify greater preference
+if (wfh > wfo) {
+  cat("Greater preference: WFH\n")
+} else {
+  cat("Greater preference: WFO\n")
+}
+
+# Create bar chart
+counts <- c(WFH = wfh, WFO = wfo)
+
+barplot(counts,
+        main = "Employee WFH and WFO Preference",
+        xlab = "Work Preference",
+        ylab = "Number of Employees",
+        col = c("blue", "orange"),
+        ylim = c(0, 6))
+
